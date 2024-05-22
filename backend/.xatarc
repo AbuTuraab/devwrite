@@ -2,7 +2,6 @@
   "databaseURL": "https://AbuTuraab-s-workspace-5ltcb8.us-east-1.xata.sh/db/blog-database",
   "codegen": {
     "output": "src/xata.js",
-    "moduleType": "cjs",
-    "declarations": true
+    "moduleType": "cjs"
   }
 }

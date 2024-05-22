@@ -5,10 +5,9 @@ import { useFormik } from "formik";
 import axios from "axios";
 
 const SignUp = () => {
-
   const navigate = useNavigate();
 
-  let URL = "http://localhost:3500/signup"
+  let URL = "https://w4fhll-4000.csb.app/signup";
 
   const formik = useFormik({
     initialValues: {
@@ -18,22 +17,19 @@ const SignUp = () => {
       password: "",
     },
 
-      onSubmit: (values) => {
-   
-    axios
-    .post(URL, values)
-    .then((res)=>{
-      console.log("Data sent");
-      console.log(res.data)
-    })
-    .catch((err) =>{
-      console.log(err);
-    });
-    // navigate("/")
-  },
+    onSubmit: (values) => {
+      axios
+        .post(URL, values)
+        .then((res) => {
+          console.log("Data sent");
+          console.log(res.data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+      // navigate("/");
+    },
   });
-
-
 
   return (
     <>
@@ -120,15 +116,14 @@ const SignUp = () => {
                 </div>
               </div>
 
-              
-                <div className="flex w-full">
-                  <button
-                    type="submit"
-                    className="flex items-center justify-center focus:outline-none text-white text-sm sm:text-base bg-blue-600 hover:bg-blue-700 rounded py-2 w-full transition duration-150 ease-in"
-                  >
-                    <span className="mr-2">SignUp</span>
-                  </button>
-                </div>
+              <div className="flex w-full">
+                <button
+                  type="submit"
+                  className="flex items-center justify-center focus:outline-none text-white text-sm sm:text-base bg-blue-600 hover:bg-blue-700 rounded py-2 w-full transition duration-150 ease-in"
+                >
+                  <span className="mr-2">SignUp</span>
+                </button>
+              </div>
             </form>
           </div>
         </div>
