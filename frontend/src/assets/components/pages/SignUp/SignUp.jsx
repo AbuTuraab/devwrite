@@ -21,11 +21,10 @@ const SignUp = () => {
       axios
         .post(URL, values)
         .then((res) => {
-          console.log("Data sent");
           console.log(res.data);
         })
         .catch((err) => {
-          console.log(err);
+          console.log(err.response.data);
         });
       // navigate("/");
     },
