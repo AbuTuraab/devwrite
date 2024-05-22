@@ -1,14 +1,11 @@
-
-
-
-import { getXataClient } from "./xata";
+const { getXataClient } = require("../src/xata");
 const xata = getXataClient();
 
-const  users = await xata.db.users.create({
-  firstName: "string",
-  lastName: "string",
-  email: "string",
-  password: "string",
+const users = await xata.db.users.create({
+  firstName,
+  lastName,
+  email,
+  password,
 });
 
-export default users
+export default users;
