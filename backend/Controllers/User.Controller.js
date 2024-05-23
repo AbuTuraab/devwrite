@@ -12,22 +12,41 @@ const homepage = (req, res) => {
 const signup = async (req, res) => {
   const { firstName, lastName, email, password } = req.body;
 
-  const user = await xata.db.users.create({
-    firstName,
-    lastName,
-    email,
-    password,
-  });
-  const dataavailable = await xata.db.users.getMany({
-    pagination: { size: 100 },
-  });
-  console.log(dataavailable);
-  if (response) {
-    res.status(201).json({ Message: "Successfully registered" });
-  } else if (err) {
-    console.log(err);
-    res.status(500).json({ Message: "Error occured" });
+  const user = await xata.db.users
+    .create({
+      firstName,
+      lastName,
+      email,
+      password,
+    })
+    .then((response) => {
+      console.log("User signup successfuly now");
+      res.status(201).json({ Message: "Successfully registered" });
+    })
+    .catch((error) => {
+      console.log(error);
+      res.status(500).json({ Message: "Error occured" });
+    });
+};
+
+const login = async (req, res) => {
+  const { email, password } = req.body;
+  let user;
+  try {
+    user = xata.db.users
+      .filter({
+        email,
+        password,
+      })
+      .getMany();
+  } catch (error) {
+    return new Error();
+  }
+  if (!user) {
+    res.status(400).json({
+      Message: "user not found, please sign up",
+    });
   }
 };
 
-module.exports = { homepage, signup };
+module.exports = { homepage, signup, login };
