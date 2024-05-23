@@ -31,26 +31,27 @@ const signup = async (req, res) => {
 
 const login = async (req, res) => {
   const { email, password } = req.body;
-  let user;
+
   try {
-    user = await xata.db.users
+    const user = await xata.db.users
       .filter({
         email,
-        password,
       })
-      .getMany();
-    // console.log(user);
+      .getFirst();
+    if (!user) {
+      res.status(400).json({
+        Message: "user not found, pls Signup",
+      });
+      console.log("user not found");
+    } else {
+      console.log("user is available");
+      res.status(201).json({
+        Message: "user found",
+      });
+    }
   } catch (error) {
-    return error;
+    res.status(500).json({ message: "An error occured" });
   }
-  if (!user) {
-    res.status(400).json({
-      Message: "user not found, pls signup",
-    });
-  }
-  // else {
-  //   console.log("user is available");
-  // }
 };
 
 module.exports = { homepage, signup, login };
