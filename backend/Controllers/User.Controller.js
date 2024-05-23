@@ -1,4 +1,8 @@
 const { response } = require("express");
+const bcrypt = require("bcrypt");
+
+const myPlaintextPassword = "s0//P4$$w0rD";
+const someOtherPlaintextPassword = "not_bacon";
 
 const { getXataClient } = require("../src/xata");
 const xata = getXataClient();
@@ -10,14 +14,16 @@ const homepage = (req, res) => {
 };
 
 const signup = async (req, res) => {
-  const { firstName, lastName, email, password } = req.body;
+  const saltRounds = 10;
 
+  const { firstName, lastName, email, password } = req.body;
+  const hashedPassword = bcrypt.hashSync(password, saltRounds);
   const newUser = await xata.db.users
     .create({
       firstName,
       lastName,
       email,
-      password,
+      password: hashedPassword,
     })
     .then((response) => {
       console.log("User signup successfuly now");
@@ -44,10 +50,18 @@ const login = async (req, res) => {
       });
       console.log("user not found");
     } else {
-      console.log("user is available");
       res.status(201).json({
         Message: "user found",
       });
+    }
+    const correctPassword = bcrypt.compareSync(password, user.password);
+    if (!correctPassword) {
+      console.log("wrong password");
+      res.status(400).json({
+        Message: "wrong login details",
+      });
+    } else {
+      console.log("login successfully");
     }
   } catch (error) {
     res.status(500).json({ message: "An error occured" });
