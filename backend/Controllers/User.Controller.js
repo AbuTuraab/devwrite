@@ -12,7 +12,7 @@ const homepage = (req, res) => {
 const signup = async (req, res) => {
   const { firstName, lastName, email, password } = req.body;
 
-  const user = await xata.db.users
+  const newUser = await xata.db.users
     .create({
       firstName,
       lastName,
@@ -33,20 +33,24 @@ const login = async (req, res) => {
   const { email, password } = req.body;
   let user;
   try {
-    user = xata.db.users
+    user = await xata.db.users
       .filter({
         email,
         password,
       })
       .getMany();
+    // console.log(user);
   } catch (error) {
-    return new Error();
+    return error;
   }
   if (!user) {
     res.status(400).json({
-      Message: "user not found, please sign up",
+      Message: "user not found, pls signup",
     });
   }
+  // else {
+  //   console.log("user is available");
+  // }
 };
 
 module.exports = { homepage, signup, login };
