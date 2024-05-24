@@ -1,8 +1,6 @@
 const { response } = require("express");
 const bcrypt = require("bcrypt");
-
-const myPlaintextPassword = "s0//P4$$w0rD";
-const someOtherPlaintextPassword = "not_bacon";
+const jwt = require("jsonwebtoken");
 
 const { getXataClient } = require("../src/xata");
 const xata = getXataClient();
@@ -63,8 +61,20 @@ const login = async (req, res) => {
     } else {
       console.log("login successfully");
     }
+    const secret = process.env.SECRET;
+    const token = jwt.sign({ id: user.id }, secret, { expiresIn: 10 });
+    res.status(201).json({
+      Message: "user found",
+    });
+    // res.status(200).json({
+    //   Message: "Login successfully",
+    //   token: token,
+    //   user: user,
+    // });
+    console.log("token", token);
   } catch (error) {
-    res.status(500).json({ message: "An error occured" });
+    // res.status(500).json({ message: "An error occured" });
+    console.log("nkjkjh");
   }
 };
 
