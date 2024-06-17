@@ -1,8 +1,10 @@
 const { response } = require("express");
-
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+const { loginModel, signupModel } = require("../Models/User.Models");
 const { getXataClient } = require("../src/xata");
 const xata = getXataClient();
-
+const secret = process.env.SECRET;
 require("dotenv").config;
 
 const homepage = (req, res) => {
@@ -10,42 +12,64 @@ const homepage = (req, res) => {
 };
 
 const signup = async (req, res) => {
-  const { firstName, lastName, email, password } = req.body;
-
-  const user = await xata.db.users
-    .create({
+  try {
+    const saltRounds = 10;
+    const { firstName, lastName, email, password } = req.body;
+    const hashedPassword = bcrypt.hashSync(password, saltRounds);
+    const newUser = await signupModel({
       firstName,
       lastName,
       email,
-      password,
-    })
-    .then((response) => {
-      console.log("User signup successfuly now");
-      res.status(201).json({ Message: "Successfully registered" });
-    })
-    .catch((error) => {
-      console.log(error);
-      res.status(500).json({ Message: "Error occured" });
+      password: hashedPassword,
     });
+    const token = jwt.sign({ id: newUser.id }, secret, { expiresIn: 10 });
+    res.status(201).json({
+      Message: "Account successfully created",
+      newUser,
+      token: token,
+    });
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 const login = async (req, res) => {
   const { email, password } = req.body;
-  let user;
+
   try {
-    user = xata.db.users
-      .filter({
-        email,
-        password,
-      })
-      .getMany();
-  } catch (error) {
-    return new Error();
-  }
-  if (!user) {
-    res.status(400).json({
-      Message: "user not found, please sign up",
+    const user = await loginModel(email);
+    if (!user) {
+      res.status(400).json({
+        Message: "user not found, pls Signup",
+      });
+      return;
+    }
+
+    const correctPassword = bcrypt.compareSync(password, user.password);
+    if (!correctPassword) {
+      console.log("wrong password");
+      res.status(400).json({
+        Message: "wrong login details",
+      });
+    } else {
+      console.log("login successfully");
+    }
+    const secret = process.env.SECRET;
+    const token = jwt.sign({ id: user.id }, secret, { expiresIn: 10 });
+    res.status(201).json({
+      Message: "user found",
+      token,
+      user,
     });
+    // res.status(200).json({
+    //   Message: "Login successfully",
+    //   token: token,
+    //   user: user,
+    // });
+    console.log("token", token);
+  } catch (error) {
+    // res.status(500).json({ message: "An error occured" });
+    console.log(error);
   }
 };
 
