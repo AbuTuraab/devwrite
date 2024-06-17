@@ -16,7 +16,9 @@ const Login = () => {
       axios
         .post(URL, values)
         .then((res) => {
-          console.log(res.data);
+          const token = res.data.token;
+          localStorage.setItem("token", token);
+          // console.log(localStorage.getItem("token"));
         })
         .catch((err) => {
           console.log(err);

@@ -1,10 +1,10 @@
 const { response } = require("express");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-
+const { loginModel, signupModel } = require("../Models/User.Models");
 const { getXataClient } = require("../src/xata");
 const xata = getXataClient();
-
+const secret = process.env.SECRET;
 require("dotenv").config;
 
 const homepage = (req, res) => {
@@ -12,46 +12,39 @@ const homepage = (req, res) => {
 };
 
 const signup = async (req, res) => {
-  const saltRounds = 10;
-
-  const { firstName, lastName, email, password } = req.body;
-  const hashedPassword = bcrypt.hashSync(password, saltRounds);
-  const newUser = await xata.db.users
-    .create({
+  try {
+    const saltRounds = 10;
+    const { firstName, lastName, email, password } = req.body;
+    const hashedPassword = bcrypt.hashSync(password, saltRounds);
+    const newUser = await signupModel({
       firstName,
       lastName,
       email,
       password: hashedPassword,
-    })
-    .then((response) => {
-      console.log("User signup successfuly now");
-      res.status(201).json({ Message: "Successfully registered" });
-    })
-    .catch((error) => {
-      console.log(error);
-      res.status(500).json({ Message: "Error occured" });
     });
+    const token = jwt.sign({ id: newUser.id }, secret, { expiresIn: 10 });
+    res.status(201).json({
+      Message: "Account successfully created",
+      newUser,
+      token: token,
+    });
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 const login = async (req, res) => {
   const { email, password } = req.body;
 
   try {
-    const user = await xata.db.users
-      .filter({
-        email,
-      })
-      .getFirst();
+    const user = await loginModel(email);
     if (!user) {
       res.status(400).json({
         Message: "user not found, pls Signup",
       });
-      console.log("user not found");
-    } else {
-      res.status(201).json({
-        Message: "user found",
-      });
+      return;
     }
+
     const correctPassword = bcrypt.compareSync(password, user.password);
     if (!correctPassword) {
       console.log("wrong password");
@@ -65,6 +58,8 @@ const login = async (req, res) => {
     const token = jwt.sign({ id: user.id }, secret, { expiresIn: 10 });
     res.status(201).json({
       Message: "user found",
+      token,
+      user,
     });
     // res.status(200).json({
     //   Message: "Login successfully",
@@ -74,7 +69,7 @@ const login = async (req, res) => {
     console.log("token", token);
   } catch (error) {
     // res.status(500).json({ message: "An error occured" });
-    console.log("nkjkjh");
+    console.log(error);
   }
 };
 

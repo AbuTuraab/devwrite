@@ -1,11 +1,29 @@
 const { getXataClient } = require("../src/xata");
 const xata = getXataClient();
 
-const users = await xata.db.users.create({
+const signupModel = async function signupModel({
   firstName,
   lastName,
   email,
   password,
-});
+}) {
+  return await xata.db.users.create({
+    firstName,
+    lastName,
+    email,
+    password,
+  });
+};
 
-export default users;
+const loginModel = async function loginModel(email) {
+  return await xata.db.users
+    .filter({
+      email,
+    })
+    .getFirst();
+};
+module.exports = {
+  loginModel,
+  signupModel,
+};
+// export default users;
