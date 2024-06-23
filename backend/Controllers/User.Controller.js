@@ -15,6 +15,7 @@ const signup = async (req, res) => {
   try {
     const saltRounds = 10;
     const { firstName, lastName, email, password } = req.body;
+   
     const hashedPassword = bcrypt.hashSync(password, saltRounds);
     const newUser = await signupModel({
       firstName,
@@ -26,7 +27,7 @@ const signup = async (req, res) => {
     res.status(201).json({
       Message: "Account successfully created",
       newUser,
-      token: token,
+     
     });
   } catch (error) {
     console.log(error);
@@ -41,6 +42,7 @@ const login = async (req, res) => {
     if (!user) {
       res.status(400).json({
         Message: "user not found, pls Signup",
+        token: token,
       });
       return;
     }
@@ -55,7 +57,7 @@ const login = async (req, res) => {
       console.log("login successfully");
     }
     const secret = process.env.SECRET;
-    const token = jwt.sign({ id: user.id }, secret, { expiresIn: 10 });
+    const token = jwt.sign({ id: user.id }, secret, { expiresIn: 60 });
     res.status(201).json({
       Message: "user found",
       token,

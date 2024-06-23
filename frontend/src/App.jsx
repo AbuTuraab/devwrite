@@ -11,7 +11,8 @@ import PostDetail from "./assets/components/PostDetail";
 
 function App() {
   const home = "/";
-  console.log(localStorage.getItem("token"));
+   const token = localStorage.getItem("token")
+ 
   return (
     <>
       <NavBar />

@@ -7,7 +7,7 @@ import axios from "axios";
 const SignUp = () => {
   const navigate = useNavigate();
 
-  let URL = "https://w4fhll-4000.csb.app/signup";
+  let URL = "https://cuddly-space-disco-6pq5x5j4w6vcrwvj-3200.app.github.dev/signup";
 
   const formik = useFormik({
     initialValues: {
