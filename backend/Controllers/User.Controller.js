@@ -42,7 +42,7 @@ const login = async (req, res) => {
     if (!user) {
       res.status(400).json({
         Message: "user not found, pls Signup",
-        token: token,
+        
       });
       return;
     }
@@ -57,22 +57,31 @@ const login = async (req, res) => {
       console.log("login successfully");
     }
     const secret = process.env.SECRET;
-    const token = jwt.sign({ id: user.id }, secret, { expiresIn: 60 });
+    const token = jwt.sign({ id: user.id }, secret, { expiresIn: "2 days" });
     res.status(201).json({
       Message: "user found",
       token,
       user,
     });
-    // res.status(200).json({
-    //   Message: "Login successfully",
-    //   token: token,
-    //   user: user,
-    // });
-    console.log("token", token);
+    
+    // console.log("token", token);
   } catch (error) {
-    // res.status(500).json({ message: "An error occured" });
+     res.status(500).json({ message: "An error occured" });
     console.log(error);
   }
 };
 
-module.exports = { homepage, signup, login };
+const writepage = async (req, res) =>{
+  let token = req.headers.authorization.split(' ')[1]
+   
+  console.log(token)
+  jwt.verify(token, secret, (err, result) =>{
+    if(err){
+      res.send({status:false, message: "error", err})
+    } else {
+      res.send({status: true, message: "welcome", result})
+    }
+  })
+}
+
+module.exports = { homepage, signup, login, writepage };

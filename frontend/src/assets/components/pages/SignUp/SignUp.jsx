@@ -22,11 +22,14 @@ const SignUp = () => {
         .post(URL, values)
         .then((res) => {
           console.log(res.data);
+          navigate("/login");
         })
         .catch((err) => {
           console.log(err.response.data);
+          alert("Please check your credentials and signup again")
+          window.location.reload(true)
         });
-      // navigate("/");
+       
     },
   });
 

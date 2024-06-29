@@ -1,5 +1,6 @@
 import MenuIcon from '@mui/icons-material/Menu';
-
+import axios from "axios"
+import { useEffect } from 'react';
 import CloseIcon from '@mui/icons-material/Close';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
@@ -9,6 +10,11 @@ import Reactlogo from "../images/reactimg.png"
 
 const NavBar = () => {
   const [nav, setNav] = useState(false);
+   
+
+  
+
+ 
 
   const handleNav = () =>{
     setNav(!nav);
@@ -22,7 +28,7 @@ const closeNavBar = () =>{
       path: '/'
   }, 
     {name:"Write an Article",
-    path: "/write"
+    path: "/writepage"
   }, 
     {name:"Contact Us",
       path: "/contact"

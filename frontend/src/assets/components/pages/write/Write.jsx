@@ -1,6 +1,6 @@
 
 import { useEffect, useRef, useState } from "react";
-
+import axios from "axios";
 
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
@@ -9,11 +9,35 @@ import 'react-quill/dist/quill.snow.css';
 
 
 
-import { useNavigate } from "react-router-dom";
-// import './App.css';
+import { Link, useNavigate } from "react-router-dom";
 
 
 const Write = () => {
+
+  const url = "https://cuddly-space-disco-6pq5x5j4w6vcrwvj-3200.app.github.dev/writepage"
+  
+  const token = localStorage.getItem("token");
+
+  // useEffect (() => {
+  //   axios
+  //   .get(url, {
+  //     headers:{
+  //       Authorization: `Bearer ${token}`,
+  //       "Content-Type": "application/json",
+  //       Accept: "application/json",
+  //     },
+  //     })
+  //     .then((res) =>{
+  //       if (res.data.status === true) {
+  //         console.log("success");
+  //       } else {
+  //         localStorage.removeItem("token")
+  //         navigate("/")
+  //         console.log("false")
+  //       }
+  //     })
+    
+  // }, [])
 
 const [value, setValue] = useState('')
 
@@ -65,6 +89,7 @@ console.log(value)
 
    </form>
    
+   <Link></Link>
 <button onClick={handleSetValue}  className="p-2 bg-slate-600 font-bold text-white rounded-lg m-5">Save Draft</button>
    
       

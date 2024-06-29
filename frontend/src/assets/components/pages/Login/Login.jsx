@@ -18,10 +18,13 @@ const Login = () => {
         .then((res) => {
           const token = res.data.token;
           localStorage.setItem("token", token);
+          navigate("/")
           // console.log(localStorage.getItem("token"));
         })
         .catch((err) => {
           console.log(err);
+          alert("Please enter correct login details")
+          window.location.reload(true)
         });
     },
   });
