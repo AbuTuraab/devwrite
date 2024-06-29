@@ -10,12 +10,7 @@ import Reactlogo from "../images/reactimg.png"
 
 const NavBar = () => {
   const [nav, setNav] = useState(false);
-   
-
   
-
- 
-
   const handleNav = () =>{
     setNav(!nav);
   };

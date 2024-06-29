@@ -30,6 +30,9 @@ const signup = async (req, res) => {
      
     });
   } catch (error) {
+    res.status(500).json({
+      Message: "Wrong credentials"
+    })
     console.log(error);
   }
 };

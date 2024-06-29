@@ -25,7 +25,7 @@ const SignUp = () => {
           navigate("/login");
         })
         .catch((err) => {
-          console.log(err.response.data);
+          console.log(err);
           alert("Please check your credentials and signup again")
           window.location.reload(true)
         });
