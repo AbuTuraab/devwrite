@@ -5,7 +5,7 @@ import axios from "axios";
 
 const Login = () => {
   const navigate = useNavigate();
-  let URL = "https://cuddly-space-disco-6pq5x5j4w6vcrwvj-3200.app.github.dev/login";
+  let URL = "https://devwrite.onrender.com/login";
   const formik = useFormik({
     initialValues: {
       email: "",
