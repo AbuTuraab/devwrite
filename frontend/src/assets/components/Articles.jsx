@@ -30,21 +30,17 @@ const Articles = () => {
 
   return (
     <>
-      <div className='md:px-[100px] pt-20 content-start justify-around'>
+      <div className='md:px-[100px] pt-20 content-start justify-around '>
         {posts.length > 0 && posts.map((postsDetails) => (
           <div key={postsDetails.id}>
-          {/* <Link>
-            <div onClick={handlePostDetail}><img src={reactimg} alt='reactimg' />
-            
-            <h2 className='font-bold py-3'>{postsDetails.title}</h2></div>
-            
-            </Link> */}
-
+           
+            <div onClick={handlePostDetail}><Link to={`/post/${postsDetails.id}`}>
+             
+             <div  > <img src={reactimg} alt='reactimg' className="w-[300px]"/></div> </Link>
             <Link to={`/post/${postsDetails.id}`}>
-            <div onClick={handlePostDetail}><img src={reactimg} alt='reactimg' />
-            
-            <h2 className='font-bold py-3'>{postsDetails.title}</h2></div>
-                  </Link>
+            <h2 className='font-bold py-3'>{postsDetails.title}</h2>  </Link>
+            </div>
+          
 
             <div className='py-3'>
               <h5>by Aliyu Adeniji <span>On 24th March, 2024.</span></h5>

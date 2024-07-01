@@ -10,6 +10,7 @@ import Reactlogo from "../images/reactimg.png"
 
 const NavBar = () => {
   const [nav, setNav] = useState(false);
+  const token = localStorage.getItem("token")
   
   const handleNav = () =>{
     setNav(!nav);
@@ -81,7 +82,8 @@ const closeNavBar = () =>{
     </ul>
 
     <div className='flex flex-col p-5 gap-4'>
-     <button className="bg-blue-400 hover:cursor-pointer px-2 rounded-md text-white"> <NavLink to="/login">Login</NavLink></button>
+      {token? <button className="bg-blue-400 hover:cursor-pointer px-2 rounded-md text-white"> <NavLink to="/login">Login</NavLink></button> : <p>hi</p>}
+     
     <button className="bg-blue-600 hover:cursor-pointer px-2  rounded-md text-white"><NavLink to='/signUp'>Signup</NavLink></button>
     </div> 
       </div>

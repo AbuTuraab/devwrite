@@ -23,7 +23,7 @@ const PostDetail = () => {
      
         
         
-          <div className='items-center content-center justify-center' ><img src={reactimg} alt='reactimg' />
+          <div className='flex w-full justify-center items-center' ><img src={reactimg} alt='reactimg' className="w-[400px]"/>
          
           </div>
           
